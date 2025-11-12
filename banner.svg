@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#dff4ff"/>
+      <stop offset="1" stop-color="#e6f0ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <g font-family="Poppins, Arial, sans-serif">
+    <text x="60" y="150" font-size="72" fill="#053e9e" font-weight="700">Legion Roleplay</text>
+    <text x="60" y="220" font-size="28" fill="#0b66ff">Servidor SAMP • RP • Eventos</text>
+    <text x="60" y="300" font-size="20" fill="#1f6b8a">Entre no Discord: discord.gg/HxJM64YFzv</text>
+  </g>
+  <g transform="translate(920,60)" fill="#0b66ff">
+    <circle cx="80" cy="80" r="60" opacity="0.12"/>
+    <text x="40" y="95" font-size="64" fill="#053e9e">🎮</text>
+  </g>
+</svg>

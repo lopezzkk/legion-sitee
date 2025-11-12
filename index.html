@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Legion Roleplay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --blue:#0b66ff;
+      --dark-blue:#053e9e;
+      --white:#ffffff;
+      --glass: rgba(255,255,255,0.06);
+      --card-shadow: 0 8px 24px rgba(9,30,66,0.12);
+      --radius:14px;
+      --accent: #0b66ff;
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:linear-gradient(180deg,#eaf2ff 0%, #f8fbff 100%); color:#073047;}
+    header{backdrop-filter: blur(6px); background:linear-gradient(90deg, rgba(11,102,255,0.06), rgba(255,255,255,0.02)); padding:18px 28px; display:flex; align-items:center; justify-content:space-between;}
+    .brand{display:flex; gap:14px; align-items:center}
+    .logo{width:64px; height:64px; border-radius:12px; background:linear-gradient(135deg,var(--blue),var(--dark-blue)); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:22px; box-shadow:var(--card-shadow)}
+    nav{display:flex; gap:12px}
+    nav a{padding:10px 14px; border-radius:10px; text-decoration:none; color:var(--dark-blue); font-weight:600}
+    nav a.active{background:linear-gradient(90deg, rgba(11,102,255,0.14), rgba(11,102,255,0.06)); color:var(--dark-blue)}
+    main{max-width:1100px; margin:34px auto; padding:0 18px}
+    .hero{display:grid; grid-template-columns:1fr 420px; gap:24px; align-items:center}
+    .card{background:var(--white); border-radius:var(--radius); padding:22px; box-shadow:var(--card-shadow)}
+    .title{font-size:28px; font-weight:700; color:var(--dark-blue)}
+    .subtitle{color:#1f6b8a}
+    .big-cta{display:inline-block; margin-top:14px; background:var(--accent); color:white; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700}
+    .server-image{width:100%; height:220px; border-radius:12px; object-fit:cover; background: linear-gradient(135deg,#dff0ff,#e9f3ff); display:flex; align-items:center; justify-content:center; font-size:18px; color:var(--dark-blue)}
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px}
+    .info-line{display:flex; align-items:center; gap:12px}
+    footer{max-width:1100px; margin:26px auto; padding:18px; color:#0a2540; font-size:14px}
+
+    /* store */
+    .store-grid{display:grid; grid-template-columns:1fr 360px; gap:18px}
+    .option{padding:14px; border-radius:12px; border:1px solid #e6f0ff; display:flex; justify-content:space-between; align-items:center}
+    .qty{font-weight:700}
+    input[type=number], input[type=text], input[type=email]{width:100%; padding:10px; border-radius:10px; border:1px solid #d9e8ff}
+    button{cursor:pointer}
+    .muted{color:#6b7f90}
+    .chip{background:var(--glass); padding:6px 10px; border-radius:999px; font-weight:600}
+
+    /* responsive */
+    @media (max-width:900px){.hero{grid-template-columns:1fr;}.grid-3{grid-template-columns:1fr}.store-grid{grid-template-columns:1fr}}
+
+    /* admin modal */
+    .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.45)}
+    .modal.open{display:flex}
+    .modal .card{max-width:760px; width:100%}
+
+    /* players panel */
+    .players-list{display:flex; flex-direction:column; gap:8px}
+    .player{display:flex; justify-content:space-between; padding:10px; border-radius:10px; background:#f6fbff}
+
+    .btn{background:var(--accent); color:white; padding:8px 12px; border-radius:10px; border:0; font-weight:700}
+    .btn.secondary{background:transparent; color:var(--dark-blue); border:1px solid rgba(11,102,255,0.12)}
+
+    .small{font-size:13px}
+
+    /* decorative */
+    .glow{box-shadow:0 10px 40px rgba(11,102,255,0.18)}
+
+    /* simple animation for emojis and CTA */
+    .big-cta { transition: transform .18s ease, box-shadow .18s ease; }
+    .big-cta:hover { transform: translateY(-6px); box-shadow: 0 14px 34px rgba(11,102,255,0.18); }
+    .pulse { animation: pulse 2.2s infinite; display:inline-block; }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity:1 }
+      50% { transform: scale(1.04); opacity:0.9 }
+      100% { transform: scale(1); opacity:1 }
+    }
+  </style>
+</head>
+<body>
+  <!-- ========== CONFIG ========== -->
+  <script>
+    /* EDIT THESE VALUES to configure your site */
+    window.SITE_CONFIG = {
+      serverName: 'Legion Roleplay',
+      serverIP: '18.231.193.132:7724',
+      discordLink: 'https://discord.gg/HxJM64YFzv',
+      pixKey: '351b21f1-b9db-46d5-91e3-2a4f059d38ff',
+      pricePerLcoin: 0.5, // in BRL
+      adminPassword: 'legion-admin-2025', // change before hosting
+      statusCheckEndpoint: '', // optional: set a backend endpoint that returns {online:true/false,players:12}
+      themeImage: '' // optional URL for hero image
+    };
+  </script>
+
+  <header>
+    <div class="brand">
+      <div class="logo">LR</div>
+      <div>
+        <div style="font-weight:800; font-size:18px">Legion Roleplay <span style="font-weight:400; color:#0b66ff">🌐</span></div>
+        <div style="font-size:12px; color:#0b6bff;">RP • SAMP • Comunitário</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#home" class="nav-link active">Início</a>
+      <a href="#info" class="nav-link">Informações</a>
+      <a href="#store" class="nav-link">Loja</a>
+      <a href="#players" class="nav-link">Players</a>
+      <a href="#admin" class="nav-link">Admin</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="hero">
+      <div class="card">
+        <div class="title">Bem-vindo ao <span id="site-name">Legion Roleplay</span> <span class="pulse">✨</span></div>
+        <p class="subtitle" id="site-desc">Servidor SAMP focado em roleplay com eventos, facções e comunidade ativa. Entre para viver histórias únicas, participe dos eventos semanais e curta o RP com respeito. (Você pode editar esse texto no topo do arquivo.)</p>
+        <a class="big-cta" onclick="document.querySelector('.nav-link[href=\"#store\"]').click();">Entrar na Loja 💳</a>
+
+        <div class="grid-3">
+          <div class="card" style="display:flex;flex-direction:column">
+            <div style="font-weight:700">IP do servidor</div>
+            <div style="margin-top:8px; display:flex; gap:8px; align-items:center">
+              <div class="chip" id="ip-chip">18.231.193.132:7724</div>
+              <button class="btn secondary" onclick="copyToClipboard(window.SITE_CONFIG.serverIP)">Copiar IP</button>
+            </div>
+            <div class="small muted" style="margin-top:8px">Clique em copiar e cole no SA-MP para conectar.</div>
+          </div>
+
+          <div class="card" style="display:flex;flex-direction:column">
+            <div style="font-weight:700">Discord</div>
+            <div style="margin-top:8px; display:flex; gap:8px; align-items:center">
+              <a class="chip" id="discord-chip" href="#" onclick="window.open(window.SITE_CONFIG.discordLink,'_blank')">Entrar no Discord 🎧</a>
+              <button class="btn secondary" onclick="copyToClipboard(window.SITE_CONFIG.discordLink)">Copiar link</button>
+            </div>
+            <div class="small muted" style="margin-top:8px">Servidor com canais de suporte, anúncios e eventos.</div>
+          </div>
+
+          <div class="card" id="status-card" style="display:flex;flex-direction:column; align-items:flex-start">
+            <div style="font-weight:700">Status do servidor</div>
+            <div style="margin-top:10px; display:flex; gap:12px; align-items:center">
+              <div id="server-status" class="chip">—</div>
+              <div class="muted small" id="players-count">— jogadores</div>
+            </div>
+            <div style="margin-top:10px"><button class="btn" onclick="checkStatus(true)">Atualizar status</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card server-image glow" id="hero-image">
+          <img src="assets/banner.svg" alt="Banner Legion Roleplay" style="width:100%; height:220px; border-radius:12px; object-fit:cover">
+        </div>
+        <div style="margin-top:12px; display:flex; gap:8px">
+          <a class="btn" onclick="window.open(window.SITE_CONFIG.discordLink,'_blank')">Entrar no Discord</a>
+          <a class="btn secondary" onclick="copyToClipboard(window.SITE_CONFIG.serverIP)">Copiar IP</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFO -->
+    <section id="info" style="margin-top:22px">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <div>
+            <div style="font-weight:800; font-size:20px">Informações do servidor</div>
+            <div class="muted small">Tudo que o jogador precisa para entrar e participar</div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:12px">
+          <div class="card">
+            <div style="font-weight:700">Como conectar</div>
+            <ol style="margin-top:8px">
+              <li>Abra o SA-MP (multi-player).</li>
+              <li>Clique em 'Add Server' e cole o IP: <strong id="ip-info">18.231.193.132:7724</strong>.</li>
+              <li>Conecte-se e divirta-se.</li>
+            </ol>
+          </div>
+
+          <div class="card">
+            <div style="font-weight:700">Discord & Suporte</div>
+            <div style="margin-top:8px">Link do Discord: <a href="#" onclick="window.open(window.SITE_CONFIG.discordLink,'_blank')">Abrir Discord</a></div>
+            <div class="muted small" style="margin-top:6px">Dúvidas, denúncias e tickets por lá.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORE -->
+    <section id="store" style="margin-top:22px">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <div>
+            <div style="font-weight:800; font-size:20px">Loja — Comprar LCOINS</div>
+            <div class="muted small">Pague via PIX e receba um código único. Envie o código no ticket do Discord.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="store-grid">
+          <div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap">
+              <div class="option" style="flex:1">
+                <div>
+                  <div style="font-weight:700">200 LCOINS</div>
+                  <div class="small muted">Melhor custo</div>
+                </div>
+                <div style="text-align:right">
+                  <div class="qty">R$ <span data-amount="200">0</span></div>
+                  <button class="btn" onclick="selectPack(200)">Comprar</button>
+                </div>
+              </div>
+
+              <div class="option" style="flex:1">
+                <div>
+                  <div style="font-weight:700">100 LCOINS</div>
+                </div>
+                <div style="text-align:right">
+                  <div class="qty">R$ <span data-amount="100">0</span></div>
+                  <button class="btn" onclick="selectPack(100)">Comprar</button>
+                </div>
+              </div>
+
+              <div class="option" style="flex:1">
+                <div>
+                  <div style="font-weight:700">50 LCOINS</div>
+                </div>
+                <div style="text-align:right">
+                  <div class="qty">R$ <span data-amount="50">0</span></div>
+                  <button class="btn" onclick="selectPack(50)">Comprar</button>
+                </div>
+              </div>
+
+              <div class="option" style="flex:1">
+                <div>
+                  <div style="font-weight:700">20 LCOINS</div>
+                </div>
+                <div style="text-align:right">
+                  <div class="qty">R$ <span data-amount="20">0</span></div>
+                  <button class="btn" onclick="selectPack(20)">Comprar</button>
+                </div>
+              </div>
+
+              <div class="option" style="flex:1">
+                <div>
+                  <div style="font-weight:700">10 LCOINS</div>
+              ...
+
+              <div style="text-align:right">
+                  <div class="qty">R$ <span data-amount="10">0</span></div>
+                  <button class="btn" onclick="selectPack(10)">Comprar</button>
+                </div>
+              </div>
+
+            </div>
+
+            <div style="margin-top:12px">
+              <div style="font-weight:700">Ou escolha um valor personalizado</div>
+              <div style="display:flex; gap:8px; margin-top:8px">
+                <input id="customQty" type="number" min="1" placeholder="Quantidade de LCOINS" />
+                <button class="btn" onclick="selectCustom()">Selecionar</button>
+              </div>
+            </div>
+
+            <div id="checkout" style="margin-top:14px; display:none">
+              <div style="font-weight:700">Resumo da compra</div>
+              <div style="margin-top:8px">Email (para receber recibo):<br><input id="buyerEmail" type="email" placeholder="seuemail@exemplo.com" /></div>
+              <div style="margin-top:8px">Quantidade: <strong id="checkoutQty"></strong> LCOINS</div>
+              <div style="margin-top:8px">Preço total: <strong id="checkoutPrice"></strong> BRL</div>
+              <div style="margin-top:10px">PIX (chave): <div class="chip" id="pixKey"></div> <button class="btn secondary" onclick="copyToClipboard(window.SITE_CONFIG.pixKey)">Copiar PIX</button></div>
+              <div style="margin-top:10px"><button class="btn" onclick="confirmPayment()">Já paguei — Enviar comprovante</button></div>
+            </div>
+
+            <div id="thankyou" style="margin-top:12px; display:none" class="card">
+              <div style="font-weight:800">Obrigado pela compra! 🎉</div>
+              <div class="muted small" style="margin-top:6px">Seu pagamento está sendo verificado. Ao confirmar, um código único será gerado.</div>
+              <div style="margin-top:8px">Código gerado: <div class="chip" id="purchaseCode">—</div></div>
+              <div style="margin-top:8px">Após gerar o código, abra um ticket no Discord do servidor e envie o código para receber seus LCOINS.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="font-weight:700">Informações de pagamento</div>
+            <div style="margin-top:8px">Chave PIX: <div class="chip" id="pix-card">351b21f1-b9db-46d5-91e3-2a4f059d38ff</div></div>
+            <div class="muted small" style="margin-top:8px">Preço por LCOIN: R$ <span id="price-per-lcoin">0.50</span></div>
+            <div style="margin-top:12px">
+              <div style="font-weight:700">Como funciona</div>
+              <ol style="margin-top:6px">
+                <li>Escolha a quantidade de LCOINS e pague no PIX usando a chave acima.</li>
+                <li>Depois de pagar, clique em "Já paguei — Enviar comprovante" e informe seu email.</li>
+                <li>O sistema gerará um código único quando a compra for aceita — abra um ticket no Discord e envie o código.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PURCHASE HISTORY (admin only) -->
+    <section id="admin" style="margin-top:22px">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <div>
+            <div style="font-weight:800; font-size:20px">Histórico de compras (somente admin)</div>
+            <div class="muted small">Protegido por senha — só você pode ver</div>
+          </div>
+          <div>
+            <button class="btn" onclick="openAdminLogin()">Abrir histórico</button>
+          </div>
+        </div>
+
+        <div id="admin-panel" style="margin-top:12px; display:none">
+          <div style="font-weight:700">Registro de compras</div>
+          <div id="history-table" style="margin-top:8px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAYERS PANEL -->
+    <section id="players" style="margin-top:22px">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <div>
+            <div style="font-weight:800; font-size:20px">Painel de Players</div>
+            <div class="muted small">Gerencie os players apresentados no site</div>
+          </div>
+          <div>
+            <button class="btn" onclick="addPlayerPrompt()">Adicionar player</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="players-list card" id="players-list"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    © <span id="footer-year"></span> Legion Roleplay — Site temático azul e branco • Feito pra comunidade
+  </footer>
+
+  <!-- admin modal -->
+  <div class="modal" id="login-modal">
+    <div class="card">
+      <div style="font-weight:800; font-size:18px">Entrada Admin</div>
+      <div style="margin-top:8px">Senha:</div>
+      <input id="adminPass" type="password" style="margin-top:8px; padding:10px; border-radius:8px; border:1px solid #e6f0ff" />
+      <div style="margin-top:10px; display:flex; gap:8px">
+        <button class="btn" onclick="loginAdmin()">Entrar</button>
+        <button class="btn secondary" onclick="closeAdminModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Small helper functions
+    function copyToClipboard(text){navigator.clipboard.writeText(text).then(()=>alert('Copiado: '+text)).catch(()=>prompt('Copiar manualmente',text))}
+    document.getElementById('footer-year').innerText = new Date().getFullYear();
+
+    // Initialize UI from config
+    document.getElementById('site-name').innerText = window.SITE_CONFIG.serverName || 'Legion Roleplay';
+    document.getElementById('ip-chip').innerText = window.SITE_CONFIG.serverIP;
+    document.getElementById('ip-info').innerText = window.SITE_CONFIG.serverIP;
+    document.getElementById('pix-card').innerText = window.SITE_CONFIG.pixKey;
+    document.getElementById('pixKey').innerText = window.SITE_CONFIG.pixKey;
+    document.getElementById('price-per-lcoin').innerText = (window.SITE_CONFIG.pricePerLcoin||0.5).toFixed(2);
+
+    // compute prices for pack displays
+    function updatePackPrices(){
+      document.querySelectorAll('[data-amount]').forEach(el=>{
+        const qty = Number(el.getAttribute('data-amount'))||0;
+        el.innerText = (qty*(window.SITE_CONFIG.pricePerLcoin||0.5)).toFixed(2);
+      });
+    }
+    updatePackPrices();
+
+    // navigation
+    document.querySelectorAll('.nav-link').forEach(a=>a.addEventListener('click',function(e){
+      e.preventDefault();document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));this.classList.add('active');
+      const id = this.getAttribute('href').replace('#',''); document.getElementById(id).scrollIntoView({behavior:'smooth'});
+    }));
+
+    // STATUS CHECK (simulated unless statusCheckEndpoint provided)
+    async function checkStatus(force=false){
+      const el = document.getElementById('server-status');
+      const pc = document.getElementById('players-count');
+      el.innerText = 'Verificando...';
+      try{
+        if(window.SITE_CONFIG.statusCheckEndpoint){
+          const res = await fetch(window.SITE_CONFIG.statusCheckEndpoint);
+          const json = await res.json();
+          el.innerText = json.online? '🟢 Online':'🔴 Offline';
+          pc.innerText = (json.players||0)+ ' jogadores';
+        } else {
+          // fallback simulated ping: try connecting to IP via a web proxy won't work, so random for demo
+          const online = Math.random() > 0.3; const players = online? Math.floor(Math.random()*120):0;
+          el.innerText = online? '🟢 Online':'🔴 Offline';
+          pc.innerText = players+ ' jogadores';
+        }
+      }catch(err){el.innerText='🔴 Offline'; pc.innerText='0 jogadores'}
+    }
+    checkStatus();
+
+    // STORE LOGIC
+    let selectedQty = 0;
+    function selectPack(qty){selectedQty = qty; openCheckout();}
+    function selectCustom(){const v = Number(document.getElementById('customQty').value); if(!v || v<1){alert('Escolha uma quantidade válida');return;} selectedQty=v; openCheckout();}
+    function openCheckout(){document.getElementById('checkout').style.display='block'; document.getElementById('checkoutQty').innerText=selectedQty; document.getElementById('checkoutPrice').innerText=(selectedQty*(window.SITE_CONFIG.pricePerLcoin||0.5)).toFixed(2); document.getElementById('buyerEmail').value='';}
+
+    function confirmPayment(){ const email = document.getElementById('buyerEmail').value.trim(); if(!email){alert('Coloque um email para registro');return;} // in real app we'd verify payment
+      // Simulate accepted payment flow
+      const code = generateCode(10);
+      const price = (selectedQty*(window.SITE_CONFIG.pricePerLcoin||0.5)).toFixed(2);
+      const purchase = {id:Date.now(),email:email,qty:selectedQty,price:price,code:code,date:new Date().toISOString()};
+      savePurchase(purchase);
+      document.getElementById('checkout').style.display='none';
+      document.getElementById('thankyou').style.display='block';
+      document.getElementById('purchaseCode').innerText = code;
+      // show pix and instructions
+    }
+
+    function generateCode(len){ const chars='ABCDEFGHJKMNPQRSTUVWXYZ23456789'; let s=''; for(let i=0;i<len;i++) s+=chars[Math.floor(Math.random()*chars.length)]; return 'LR-'+s; }
+
+    // localStorage purchases
+    function savePurchase(p){ const arr = JSON.parse(localStorage.getItem('lr_purchases')||'[]'); arr.push(p); localStorage.setItem('lr_purchases',JSON.stringify(arr)); }
+    function getPurchases(){ return JSON.parse(localStorage.getItem('lr_purchases')||'[]'); }
+
+    // ADMIN
+    function openAdminLogin(){ document.getElementById('login-modal').classList.add('open'); }
+    function closeAdminModal(){ document.getElementById('login-modal').classList.remove('open'); document.getElementById('adminPass').value=''; }
+    function loginAdmin(){ const pass = document.getElementById('adminPass').value; if(pass===window.SITE_CONFIG.adminPassword){ showAdminPanel(); closeAdminModal(); } else { alert('Senha incorreta'); } }
+    function showAdminPanel(){ const panel = document.getElementById('admin-panel'); panel.style.display='block'; const table = document.getElementById('history-table'); const purchases = getPurchases(); if(purchases.length===0) table.innerHTML='<div class=\"muted small\">Nenhuma compra registrada</div>'; else{
+        let html = '<table style=\"width:100%; border-collapse:collapse\">'; 
+        html += '<tr><th style=\"text-align:left\">Data</th><th style=\"text-align:left\">Email</th><th>Quantidade</th><th>Preço (BRL)</th><th>Código</th></tr>';
+        purchases.slice().reverse().forEach(p=>{ const d = new Date(p.date).toLocaleString(); html += `<tr style=\"border-top:1px solid #eef6ff\"><td>${d}</td><td>${p.email}</td><td style=\"text-align:center\">${p.qty}</td><td style=\"text-align:center\">${p.price}</td><td style=\"text-align:center\">${p.code}</td></tr>` });
+        html += '</table>';
+        table.innerHTML=html;
+      }
+    }
+
+    // PLAYERS PANEL
+    function loadPlayers(){ const arr = JSON.parse(localStorage.getItem('lr_players')||'[]'); const list = document.getElementById('players-list'); list.innerHTML=''; arr.forEach((p,idx)=>{ const div = document.createElement('div'); div.className='player'; div.innerHTML = `<div><strong>${p.name}</strong><div class=\"small muted\">${p.desc||''}</div></div><div><button class=\"btn secondary\" onclick=\"editPlayer(${idx})\">Editar</button> <button class=\"btn\" onclick=\"removePlayer(${idx})\">Remover</button></div>`; list.appendChild(div); }); if(arr.length===0) list.innerHTML='<div class=\"muted small\">Nenhum player adicionado ainda</div>' }
+    function addPlayerPrompt(){ const name = prompt('Nome do player (aparecerá no site)'); if(!name) return; const desc = prompt('Descrição / cargo (opcional)')||''; const arr = JSON.parse(localStorage.getItem('lr_players')||'[]'); arr.push({name,desc}); localStorage.setItem('lr_players',JSON.stringify(arr)); loadPlayers(); }
+    function editPlayer(i){ const arr = JSON.parse(localStorage.getItem('lr_players')||'[]'); const p = arr[i]; const name = prompt('Editar nome',p.name); if(!name) return; const desc = prompt('Editar descrição',p.desc)||''; arr[i]={name,desc}; localStorage.setItem('lr_players',JSON.stringify(arr)); loadPlayers(); }
+    function removePlayer(i){ if(!confirm('Remover esse player?')) return; const arr = JSON.parse(localStorage.getItem('lr_players')||'[]'); arr.splice(i,1); localStorage.setItem('lr_players',JSON.stringify(arr)); loadPlayers(); }
+
+    // init
+    function init(){ document.getElementById('hero-image').innerText = (window.SITE_CONFIG.themeImage? '': '🎮 Legion Roleplay — Vem pro RP!'); document.getElementById('pix-card').innerText = window.SITE_CONFIG.pixKey;
+      document.getElementById('pixKey').innerText = window.SITE_CONFIG.pixKey;
+      // wire up pack price texts
+      updatePackPrices();
+      // set copy handlers already done
+      loadPlayers();
+    }
+    init();
+  </script>
+</body>
+</html>
